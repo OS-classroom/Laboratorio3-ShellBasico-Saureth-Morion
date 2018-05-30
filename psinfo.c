@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <signal.h>
 
 void Etapa1(char *PID);
 void Etapa2(char *argv[]);
@@ -45,7 +46,8 @@ int main(int argc, char*argv[])
 		errorCode = PrintParamError(paramAmount, argv[1]);
 		return errorCode;
 	    }
-    }
+	}
+	return 1;					
 }
 
 int PrintParamError(int type, char *PID){
@@ -393,6 +395,7 @@ void Etapa1(char *PID){
 		counter++;
 	}
 	fclose(fd);
+
     }
 }
 	

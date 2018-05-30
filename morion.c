@@ -175,7 +175,7 @@ void kill_p(int s, int ipid)
     pid_t pid=ipid;
     int a = kill(pid,s);
     
-    printf("La señal %d fue enviada al proceso: %d",a,ipid);
+    printf("La señal -%d fue enviada al proceso: %d\n",s,ipid);
 
     
 }

@@ -21,8 +21,8 @@ int main(){
         printf("Comando > ");
         scanf("%s", str); 
         fgets (expresion, TAM, stdin);      
-        num = separaItems (expresion, &items, &background);  
-	printf ("%d", num);
+        num = separaItems (expresion, &items, &background); 
+	//printf ("%d", num);
         int ejecutar = 1;
 
         if (background==1){
@@ -31,15 +31,19 @@ int main(){
             if (a == 0) 
             {
                 ejecutar = 1;
-                printf("[Ejecutando comando en segundo plano]");
+                printf("[Ejecutando comando en segundo plano] \n");
             }
+            wait();
         }
         if (ejecutar == 1)
         {
 	    if(strcmp(str,"myps")== 0)
             {
-               execl("./mygetdents", "/proc/",NULL);
-               printf("\n");
+                if(fork()==0){
+                    execl("./mygetdents", "/proc/",NULL);
+                }
+                wait();                
+                printf("\n");
             }
             else if(strcmp(str,"mypwd")== 0)
             {
@@ -118,12 +122,26 @@ int main(){
                 }
             }else if(strcmp(str,"psinfo")== 0)
             {
-                if(num==1)
+                if(num>=1)
                 {
-		    items[1]= items[0];
-	  	    if(fork()==0){
-			execv("./psinfo", items);
-		    }                    
+
+                    char** it2 = (char**) malloc( num * 30);
+                    items[1]= items[0]; 
+                    it2[1]= items[0]; 
+                    if(num>1)
+                    {
+                        for(int k = 0; k < num; k++)
+                        {
+                            it2 [k+2] = items [k];
+                        }
+                        it2[1]= "-l";
+                        it2[0]= "psinfo";
+                    }
+
+                    if(fork()==0){
+                        execv("./psinfo", it2);
+                    }
+                    wait();                
                     printf("\n");
                 }else{
                     ImprimirError(str);
